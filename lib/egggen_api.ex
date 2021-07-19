@@ -110,8 +110,6 @@ defmodule EgggenApi do
       "Species" => pokemon["pokemon_name"],
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
       "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
-      "Level" => 1,
-      "isEgg" => true,
       "isShiny" => shiny_chance > :rand.uniform(100),
       "Nature" => Enum.random(["Hardy", "Lonely", "Adamant", "Naughty", "Brave", "Bold", "Docile", "Impish", "Lax", "Relaxed", "Modest", "Mild", "Bashful", "Rash", "Quiet", "Calm", "Gentle", "Careful", "Quirky", "Sassy", "Timid", "Hasty", "Jolly", "Naive", "Serious"]),
       "HP" => :rand.uniform(31),
