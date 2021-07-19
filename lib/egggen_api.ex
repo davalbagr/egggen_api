@@ -43,7 +43,6 @@ defmodule EgggenApi do
           |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
           |> Enum.random()
           a["id"]
-        end
       end
     end
   end
