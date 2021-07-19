@@ -8,8 +8,9 @@ def insert_pokemon(file, pokemons):
     else:
         first = False
     file.write(json.dumps(
-        {'pokemon_name': pokemons[0], 'pokemon_normal_moves': pokemons[1], 'pokemon_egg_moves': pokemons[2],
+        {'pokemon_id': pokemons[0], 'pokemon_normal_moves': pokemons[1], 'pokemon_egg_moves': pokemons[2],
          'pokemon_normal_abilities': pokemons[3], 'pokemon_hidden_abilities': pokemons[4], 'pokemon_gen': pokemons[5]}))
+    print("inserted {0}".format(pokemons[0]))     
 
 
 def fetch_moves(r):
@@ -20,16 +21,23 @@ def fetch_moves(r):
         try:
             r2 = r[counter]['version_group_details']
             counter2 = 0
+            has_been_requested = []
             while True:
                 try:
                     move_types = ['egg', 'level-up']
                     if r2[counter2]['level_learned_at'] < 2 and r2[counter2]['move_learn_method']['name'] in move_types:
+                        r3 = list(filter(lambda i: i['name'] == r[counter]['move']['name'] ,has_been_requested))
+                        if r3 == []:
+                            r3 = requests.get(r[counter]['move']['url']).json()
+                            has_been_requested.append({'name': r[counter]['move']['name'], 'id': r3['id']})
+                        else:
+                            r3 = r3[0]    
                         if r2[counter2]['move_learn_method']['name'] == 'egg':
                             egg_moves.append(
-                                {'name': r[counter]['move']['name'], 'game': r2[counter2]['version_group']['name']})
+                                {'id': r3['id'], 'game': r2[counter2]['version_group']['name']})
                         else:
                             normal_moves.append(
-                                {'name': r[counter]['move']['name'], 'game': r2[counter2]['version_group']['name']})
+                                {'id': r3['id'], 'game': r2[counter2]['version_group']['name']})
                 except:
                     break
                 counter2 = counter2 + 1
@@ -47,9 +55,9 @@ def fetch_abilities(r2):
         try:
             r3 = requests.get(r2[counter]['ability']['url']).json()
             if r2[counter]['is_hidden']:
-                hidden_abilities.append({"name": r2[counter]['ability']['name'], "gen": r3['generation']['name']})
+                hidden_abilities.append({'id': r3['id'], "gen": r3['generation']['name']})
             else:
-                normal_abilities.append({"name": r2[counter]['ability']['name'], "gen": r3['generation']['name']})
+                normal_abilities.append({'id': r3['id'], "gen": r3['generation']['name']})
         except:
             break
         counter = counter + 1
@@ -78,7 +86,7 @@ if __name__ == '__main__':
             break
         (pokemon_normal_moves, pokemon_egg_moves) = fetch_moves(r2['moves'])
         (pokemon_normal_abilities, pokemon_hidden_abilities) = fetch_abilities(r2['abilities'])
-        insert_pokemon(f, [r['name'], pokemon_normal_moves, pokemon_egg_moves, pokemon_normal_abilities,
+        insert_pokemon(f, [counter, pokemon_normal_moves, pokemon_egg_moves, pokemon_normal_abilities,
                            pokemon_hidden_abilities, r['generation']['name']])
         counter = counter + 1
 

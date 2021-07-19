@@ -32,13 +32,17 @@ defmodule EgggenApi do
           b = pokemon["pokemon_normal_abilities"]
             |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
             |> Enum.random()
-            b["name"]
+            b["id"]
+        else
+          b = a
+          |> Enum.random()
+          b["id"]
         end
       else
         a = pokemon["pokemon_normal_abilities"]
         |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
         |> Enum.random()
-        a["name"]
+        a["id"]
       end
     end
   end
@@ -65,7 +69,7 @@ defmodule EgggenApi do
     |> Enum.map(fn x -> x < egg_move_chance end)
     |> count_true_false()
     Enum.take_random(normal_moves, elem(a, 1)) ++ Enum.take_random(egg_moves, elem(a, 0))
-    |> Enum.map(fn %{"name" => name, "game" => _} -> name end)
+    |> Enum.map(fn %{"id" => id, "game" => _} -> id end)
   end
   def gen_rand_species(file_data, generation) do
     file_data
@@ -88,10 +92,10 @@ defmodule EgggenApi do
         "nidoran-m", "tyrogue", "tauros", "throh", "tawk", "rufflet", "impidimp"
     ]
     cond do
-      species in genderless_pokemon -> "N"
-      species in female_only_pokemon -> "F"
-      species in male_only_pokemon -> "M"
-      true -> Enum.random(["M", "F"])
+      species in genderless_pokemon -> 2
+      species in female_only_pokemon -> 1
+      species in male_only_pokemon -> 0
+      true -> Enum.random([0, 1])
     end
   end
   def enum_at_wrapper(enum, ind) do
@@ -107,11 +111,11 @@ defmodule EgggenApi do
     pokemon = gen_rand_species(file_data, generation)
     rand_moves = gen_rand_moves(pokemon, game, egg_move_chance)
     %{
-      "Species" => pokemon["pokemon_name"],
+      "Species" => pokemon["pokemon_id"],
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
       "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
       "isShiny" => shiny_chance > :rand.uniform(100),
-      "Nature" => Enum.random(["Hardy", "Lonely", "Adamant", "Naughty", "Brave", "Bold", "Docile", "Impish", "Lax", "Relaxed", "Modest", "Mild", "Bashful", "Rash", "Quiet", "Calm", "Gentle", "Careful", "Quirky", "Sassy", "Timid", "Hasty", "Jolly", "Naive", "Serious"]),
+      "Nature" => :rand.uniform(25),
       "HP" => :rand.uniform(31),
       "Atk" => :rand.uniform(31),
       "Def" => :rand.uniform(31),
