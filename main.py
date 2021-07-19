@@ -12,6 +12,9 @@ def insert_pokemon(file, pokemons):
          'pokemon_normal_abilities': pokemons[3], 'pokemon_hidden_abilities': pokemons[4], 'pokemon_gen': pokemons[5]}))
     print("inserted {0}".format(pokemons[0]))     
 
+def parse_move_id(x):
+    x = x[31:]
+    return int(x[:-1])
 
 def fetch_moves(r):
     normal_moves = []
@@ -26,18 +29,13 @@ def fetch_moves(r):
                 try:
                     move_types = ['egg', 'level-up']
                     if r2[counter2]['level_learned_at'] < 2 and r2[counter2]['move_learn_method']['name'] in move_types:
-                        r3 = list(filter(lambda i: i['name'] == r[counter]['move']['name'] ,has_been_requested))
-                        if r3 == []:
-                            r3 = requests.get(r[counter]['move']['url']).json()
-                            has_been_requested.append({'name': r[counter]['move']['name'], 'id': r3['id']})
-                        else:
-                            r3 = r3[0]    
+                        move_id = parse_move_id(r[counter]['move']['url'])   
                         if r2[counter2]['move_learn_method']['name'] == 'egg':
                             egg_moves.append(
-                                {'id': r3['id'], 'game': r2[counter2]['version_group']['name']})
+                                {'id': move_id, 'game': r2[counter2]['version_group']['name']})
                         else:
                             normal_moves.append(
-                                {'id': r3['id'], 'game': r2[counter2]['version_group']['name']})
+                                {'id': move_id, 'game': r2[counter2]['version_group']['name']})
                 except:
                     break
                 counter2 = counter2 + 1
@@ -46,6 +44,9 @@ def fetch_moves(r):
         counter = counter + 1
     return normal_moves, egg_moves
 
+def parse_ability_id(x):
+    x = x[34:]
+    return int(x[:-1])
 
 def fetch_abilities(r2):
     normal_abilities = []
@@ -53,11 +54,11 @@ def fetch_abilities(r2):
     counter = 0
     while True:
         try:
-            r3 = requests.get(r2[counter]['ability']['url']).json()
+            ability_id = parse_ability_id(r2[counter]['ability']['url'])
             if r2[counter]['is_hidden']:
-                hidden_abilities.append({'id': r3['id'], "gen": r3['generation']['name']})
+                hidden_abilities.append({'id': ability_id, "gen": r3['generation']['name']})
             else:
-                normal_abilities.append({'id': r3['id'], "gen": r3['generation']['name']})
+                normal_abilities.append({'id': ability_id, "gen": r3['generation']['name']})
         except:
             break
         counter = counter + 1
