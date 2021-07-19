@@ -24,14 +24,12 @@ defmodule EgggenApi do
     !(gen1 in gens)
   end
   def gen_rand_ability(pokemon, generation, hidden_ability_chance) do
-    if :rand.uniform(100) < hidden_ability_chance and is_gen_lower_equal(generation, "generation-iv") and pokemon["pokemon_hidden_abilities"] != %{} do
-      a = pokemon["pokemon_hidden_abilities"]
-      {_, val} = Enum.random(a)
-      val
+    if :rand.uniform(100) < hidden_ability_chance and is_gen_lower_equal(generation, "generation-iv") and pokemon["pokemon_hidden_abilities"] != [] do
+      pokemon["pokemon_hidden_abilities"]
+      |> Enum.random()
     else
-      a = pokemon["pokemon_normal_abilities"]
-      {_, val} = Enum.random(a)
-      val
+      pokemon["pokemon_normal_abilities"]
+      |> Enum.random()
     end
   end
   def count_true_false(list) do
@@ -99,6 +97,5 @@ defmodule EgggenApi do
   def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance) do
     file_data = File.read!(Application.app_dir(:egggen_api, "priv/pokemons.json")) |> Jason.decode!()
     Enum.map(0..numb_to_gen, fn _x -> pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance) end)
-    |> Jason.encode!()
   end
 end

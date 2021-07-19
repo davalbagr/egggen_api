@@ -60,7 +60,7 @@ def fetch_abilities(r2):
         except:
             break
         counter = counter + 1
-    return to_dict(normal_abilities), to_dict(hidden_abilities)
+    return normal_abilities, hidden_abilities
 
 
 if __name__ == '__main__':
