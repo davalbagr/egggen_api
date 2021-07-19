@@ -1,14 +1,7 @@
 import requests, json, os
 
 
-def to_dict(l):
-    length = len(l)
-    return dict(zip(range(0, length), l))
-
-
 first = True
-
-
 def insert_pokemon(file, pokemons):
     global first
     if not first:
