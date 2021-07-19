@@ -62,6 +62,32 @@ defmodule EgggenApi do
     |> Enum.filter(fn %{"pokemon_gen" => x} -> is_gen_lower_equal(x, generation) end)
     |> Enum.random()
   end
+  def gen_rand_gender(species) do
+    genderless_pokemon = [
+    "arctovish", "arctozolt", "aaltoy", "aeldum", "aronzor", "aarbink", "cryogonal", "dhelmise", "dracovish",
+    "dracozolt", "falinks", "golett", "klink", "lunatone", "magnemite", "minior", "polteageist", "porygon", "rotom",
+    "solrock", "staryu", "unknown", "voltorb"
+    ]
+
+    female_only_pokemon = [
+        "nidoran-f", "illumise", "happiny", "kangaskhan", "smoochum", "miltank", "petilil", "vullaby", "flabébé",
+        "bounsweet", "hatenna", "milcrey"
+    ]
+
+    male_only_pokemon = [
+        "nidoran-m", "tyrogue", "tauros", "throh", "tawk", "rufflet", "impidimp"
+    ]
+    if species in genderless_pokemon do
+      "N"
+    end
+    if species in female_only_pokemon do
+      "F"
+    end
+    if species in male_only_pokemon do
+      "M"
+    end
+    Enum.random(["M", "F"])
+  end
   def enum_at_wrapper(enum, ind) do
     a = Enum.at(enum, ind)
     if a == nil do
@@ -77,7 +103,7 @@ defmodule EgggenApi do
     %{
       "Species" => pokemon["pokemon_name"],
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
-      "Gender" => Enum.random(["M","F"]),
+      "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
       "Level" => 1,
       "isEgg" => true,
       "isShiny" => shiny_chance > :rand.uniform(100),
