@@ -106,11 +106,30 @@ defmodule EgggenApi do
       a
     end
   end
-  def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance) do
+  def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     generation = game_to_gen(game)
     pokemon = gen_rand_species(file_data, generation)
     rand_moves = gen_rand_moves(pokemon, game, egg_move_chance)
-    %{
+    if max_ivs do
+      %{
+      "Species" => pokemon["pokemon_id"],
+      "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
+      "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
+      "isShiny" => shiny_chance > :rand.uniform(100),
+      "Nature" => :rand.uniform(25),
+      "HP" => 31,
+      "Atk" => 31,
+      "Def" => 31,
+      "SpA" => 31,
+      "SpD" => 31,
+      "Spe" => 31,
+      "MoveOne" => enum_at_wrapper(rand_moves, 0),
+      "MoveTwo" => enum_at_wrapper(rand_moves, 1),
+      "MoveThree" => enum_at_wrapper(rand_moves, 2),
+      "MoveFour" => enum_at_wrapper(rand_moves, 3)
+      }
+    else
+      %{
       "Species" => pokemon["pokemon_id"],
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
       "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
@@ -126,10 +145,11 @@ defmodule EgggenApi do
       "MoveTwo" => enum_at_wrapper(rand_moves, 1),
       "MoveThree" => enum_at_wrapper(rand_moves, 2),
       "MoveFour" => enum_at_wrapper(rand_moves, 3)
-    }
+      }
+    end
   end
-  def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance) do
+  def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     file_data = File.read!(Application.app_dir(:egggen_api, "priv/pokemons.json")) |> Jason.decode!()
-    Enum.map(0..numb_to_gen, fn _x -> pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance) end)
+    Enum.map(0..numb_to_gen, fn _x -> pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) end)
   end
 end

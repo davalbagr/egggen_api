@@ -7,9 +7,12 @@ defmodule EgggenApiWeb.Router do
 
   scope "/", EgggenApiWeb do
     pipe_through :api
-    resources "/:numb_to_gen/:game/:egg_move_chance/:hidden_ability_chance/:shiny_chance", EgggenController
+    get "/:numb_to_gen/:game/:egg_move_chance/:hidden_ability_chance/:shiny_chance", EgggenController, :index
   end
 
-
+  scope "/maxivs", EgggenApiWeb do
+    pipe_through :api
+    get "/:numb_to_gen/:game/:egg_move_chance/:hidden_ability_chance/:shiny_chance", EgggenController, :index2
+  end
 
 end
