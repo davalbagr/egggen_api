@@ -39,10 +39,14 @@ defmodule EgggenApi do
           b["id"]
         end
       else
-        a = pokemon["pokemon_normal_abilities"]
-        |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
-        |> Enum.random()
-        a["id"]
+        if pokemon["pokemon_normal_abilities"] == [] do
+          ""
+        else
+          a = pokemon["pokemon_normal_abilities"]
+          |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
+          |> Enum.random()
+          a["id"]
+        end
       end
     end
   end
