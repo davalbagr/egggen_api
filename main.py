@@ -69,7 +69,7 @@ if __name__ == '__main__':
             break
         if r is None:
             break
-        if r['evolves_from_species'] is not None or r['is_legendary']:
+        if r['evolves_from_species'] is not None or r['is_legendary'] or r['is_mythical']:
             counter = counter + 1
             continue
         try:
