@@ -1,6 +1,5 @@
 import requests, json, os
 
-
 first = True
 def insert_pokemon(file, pokemons):
     global first
@@ -46,10 +45,11 @@ def fetch_abilities(r2):
     counter = 0
     while True:
         try:
+            r3 = requests.get(r2[counter]['ability']['url']).json()
             if r2[counter]['is_hidden']:
-                hidden_abilities.append(r2[counter]['ability']['name'])
+                hidden_abilities.append({"name": r2[counter]['ability']['name'], "gen": r3['generation']['name']})
             else:
-                normal_abilities.append(r2[counter]['ability']['name'])
+                normal_abilities.append({"name": r2[counter]['ability']['name'], "gen": r3['generation']['name']})
         except:
             break
         counter = counter + 1

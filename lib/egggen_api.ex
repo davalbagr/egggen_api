@@ -18,18 +18,28 @@ defmodule EgggenApi do
   def game_to_gen("sword-shield"), do: "generation-viii"
 
   def is_gen_lower_equal(gen1, gen2) do
-    gens = ["generation-i", "generation-ii", "generation-iii", "generation-iv", "generation-v", "generation-vi", "generation-vii", "generation-viii"]
-    |> Enum.drop_while(fn x -> x != gen2 end)
-    |> tl()
-    !(gen1 in gens)
+    gens = %{"generation-i" => 1, "generation-ii" => 2, "generation-iii" => 3, "generation-iv" => 4, "generation-v" => 5, "generation-vi" => 6, "generation-vii" => 7, "generation-viii" => 8}
+    gens[gen1] <= gens[gen2]
   end
   def gen_rand_ability(pokemon, generation, hidden_ability_chance) do
-    if :rand.uniform(100) < hidden_ability_chance and is_gen_lower_equal(generation, "generation-iv") and pokemon["pokemon_hidden_abilities"] != [] do
-      pokemon["pokemon_hidden_abilities"]
-      |> Enum.random()
+    if is_gen_lower_equal(generation, "generation-ii") do
+      ""
     else
-      pokemon["pokemon_normal_abilities"]
-      |> Enum.random()
+      if :rand.uniform(100) < hidden_ability_chance and is_gen_lower_equal(generation, "generation-iv") and pokemon["pokemon_hidden_abilities"] != [] do
+        a = pokemon["pokemon_hidden_abilities"]
+        |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
+        if a == [] do
+          b = pokemon["pokemon_normal_abilities"]
+            |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
+            |> Enum.random()
+            b["name"]
+        end
+      else
+        a = pokemon["pokemon_normal_abilities"]
+        |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
+        |> Enum.random()
+        a["name"]
+      end
     end
   end
   def count_true_false(list) do
