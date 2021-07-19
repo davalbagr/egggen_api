@@ -101,7 +101,7 @@ defmodule EgggenApi do
   def enum_at_wrapper(enum, ind) do
     a = Enum.at(enum, ind)
     if a == nil do
-      ""
+      0
     else
       a
     end
