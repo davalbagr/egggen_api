@@ -77,16 +77,12 @@ defmodule EgggenApi do
     male_only_pokemon = [
         "nidoran-m", "tyrogue", "tauros", "throh", "tawk", "rufflet", "impidimp"
     ]
-    if species in genderless_pokemon do
-      "N"
+    cond do
+      species in genderless_pokemon -> "N"
+      species in female_only_pokemon -> "F"
+      species in male_only_pokemon -> "M"
+      true -> Enum.random(["M", "F"])
     end
-    if species in female_only_pokemon do
-      "F"
-    end
-    if species in male_only_pokemon do
-      "M"
-    end
-    Enum.random(["M", "F"])
   end
   def enum_at_wrapper(enum, ind) do
     a = Enum.at(enum, ind)
