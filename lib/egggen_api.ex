@@ -25,7 +25,7 @@ defmodule EgggenApi do
     if is_gen_lower_equal(generation, "generation-ii") do
       ""
     else
-      if :rand.uniform(100) < hidden_ability_chance and is_gen_lower_equal(generation, "generation-iv") and pokemon["pokemon_hidden_abilities"] != [] do
+      if :rand.uniform(100) < hidden_ability_chance and !(is_gen_lower_equal(generation, "generation-iv")) and pokemon["pokemon_hidden_abilities"] != [] do
         a = pokemon["pokemon_hidden_abilities"]
         |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
         if a == [] do
