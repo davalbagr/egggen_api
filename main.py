@@ -44,21 +44,17 @@ def fetch_moves(r):
         counter = counter + 1
     return normal_moves, egg_moves
 
-def parse_ability_id(x):
-    x = x[34:]
-    return int(x[:-1])
-
 def fetch_abilities(r2):
     normal_abilities = []
     hidden_abilities = []
     counter = 0
     while True:
         try:
-            ability_id = parse_ability_id(r2[counter]['ability']['url'])
+            r3 = requests.get(r2[counter]['ability']['url']).json()
             if r2[counter]['is_hidden']:
-                hidden_abilities.append({'id': ability_id, "gen": r3['generation']['name']})
+                hidden_abilities.append({'id': r3['id'], "gen": r3['generation']['name']})
             else:
-                normal_abilities.append({'id': ability_id, "gen": r3['generation']['name']})
+                normal_abilities.append({'id': r3['id'], "gen": r3['generation']['name']})
         except:
             break
         counter = counter + 1
