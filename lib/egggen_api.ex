@@ -92,47 +92,34 @@ defmodule EgggenApi do
       a
     end
   end
+  def cond_wrapper(bool) do
+    if bool do
+      31
+    else
+      :rand.uniform(31)
+    end
+  end
   def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     generation = game_to_gen(game)
     pokemon = gen_rand_species(file_data, generation)
     rand_moves = gen_rand_moves(pokemon, game, egg_move_chance)
-    if max_ivs do
-      %{
+    %{
       "Species" => pokemon["pokemon_id"],
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
       "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
       "isShiny" => shiny_chance > :rand.uniform(100),
       "Nature" => :rand.uniform(25),
-      "HP" => 31,
-      "Atk" => 31,
-      "Def" => 31,
-      "SpA" => 31,
-      "SpD" => 31,
-      "Spe" => 31,
+      "HP" => cond_wrapper(max_ivs),
+      "Atk" => cond_wrapper(max_ivs),
+      "Def" => cond_wrapper(max_ivs),
+      "SpA" => cond_wrapper(max_ivs),
+      "SpD" => cond_wrapper(max_ivs),
+      "Spe" => cond_wrapper(max_ivs),
       "MoveOne" => enum_at_wrapper(rand_moves, 0),
       "MoveTwo" => enum_at_wrapper(rand_moves, 1),
       "MoveThree" => enum_at_wrapper(rand_moves, 2),
       "MoveFour" => enum_at_wrapper(rand_moves, 3)
-      }
-    else
-      %{
-      "Species" => pokemon["pokemon_id"],
-      "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
-      "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
-      "isShiny" => shiny_chance > :rand.uniform(100),
-      "Nature" => :rand.uniform(25),
-      "HP" => :rand.uniform(31),
-      "Atk" => :rand.uniform(31),
-      "Def" => :rand.uniform(31),
-      "SpA" => :rand.uniform(31),
-      "SpD" => :rand.uniform(31),
-      "Spe" => :rand.uniform(31),
-      "MoveOne" => enum_at_wrapper(rand_moves, 0),
-      "MoveTwo" => enum_at_wrapper(rand_moves, 1),
-      "MoveThree" => enum_at_wrapper(rand_moves, 2),
-      "MoveFour" => enum_at_wrapper(rand_moves, 3)
-      }
-    end
+    }
   end
   def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     file_data = File.read!(Application.app_dir(:egggen_api, "priv/pokemons.json")) |> Jason.decode!()
