@@ -46,19 +46,6 @@ defmodule EgggenApi do
       end
     end
   end
-  def count_true_false(list) do
-    if list == [] do
-      {0, 0}
-    else
-      a = hd(list)
-      b = count_true_false(tl(list))
-      if a do
-        {elem(b, 0) + 1, elem(b, 1)}
-      else
-        {elem(b, 0), elem(b, 1) + 1}
-      end
-    end
-  end
   def gen_rand_moves(pokemon, game, egg_move_chance) do
     normal_moves = pokemon["pokemon_normal_moves"] |> Enum.filter(fn %{"game" => g} -> g == game end)
     egg_moves = pokemon["pokemon_egg_moves"] |> Enum.filter(fn %{"game" => g} -> g == game end)
@@ -67,8 +54,8 @@ defmodule EgggenApi do
     end
     a = [:rand.uniform(100), :rand.uniform(100), :rand.uniform(100), :rand.uniform(100)]
     |> Enum.map(fn x -> x < egg_move_chance end)
-    |> count_true_false()
-    Enum.take_random(normal_moves, elem(a, 1)) ++ Enum.take_random(egg_moves, elem(a, 0))
+    |> Enum.count(fn i -> i end)
+    Enum.take_random(normal_moves, a) ++ Enum.take_random(egg_moves, 4-a)
     |> Enum.map(fn %{"id" => id, "game" => _} -> id end)
   end
   def gen_rand_species(file_data, generation) do
