@@ -53,10 +53,9 @@ defmodule EgggenApi do
       Enum.take_random(normal_moves, 4)
     end
     a = [:rand.uniform(100), :rand.uniform(100), :rand.uniform(100), :rand.uniform(100)]
-    |> Enum.map(fn x -> x < egg_move_chance end)
-    |> Enum.count(fn i -> i end)
-    Enum.take_random(normal_moves, a) ++ Enum.take_random(egg_moves, 4-a)
-    |> Enum.map(fn %{"id" => id, "game" => _} -> id end)
+    |> Enum.count(fn x -> x < egg_move_chance end)
+    Enum.take_random(normal_moves, 4-a) ++ Enum.take_random(egg_moves, a)
+    |> Enum.map(fn %{"id" => id} -> id end)
   end
   def gen_rand_species(file_data, generation) do
     file_data
