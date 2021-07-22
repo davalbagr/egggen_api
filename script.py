@@ -41,6 +41,6 @@ if __name__ == '__main__':
             'pokemon_normal_abilities': pokemon_normal_abilities, 'pokemon_hidden_abilities': pokemon_hidden_abilities, 'pokemon_gen': r['generation']['name']})
             print("inserted {0}".format(counter))    
 
-    f = open("priv/pokemons2.json", "w")
+    f = open("priv/pokemons.json", "w")
     f.write(json.dumps(pokemons))
     f.close()
