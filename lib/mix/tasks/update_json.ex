@@ -69,6 +69,6 @@ defmodule Mix.Tasks.Updatejson do
     total = pokemons["count"]
     a = Enum.reduce(pokemons["results"], [], fn (i, acc) -> get_pokemon(i["url"], acc, total) end)
     |> Jason.encode!()
-    File.write!(Application.app_dir(:egggen_api, "priv/pokemons2.json"), a)
+    File.write!(Application.app_dir(:egggen_api, "priv/pokemons.json"), a)
   end
 end
