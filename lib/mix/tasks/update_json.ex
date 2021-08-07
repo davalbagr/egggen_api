@@ -49,8 +49,7 @@ defmodule Mix.Tasks.Updatejson do
   def get_pokemon(url, acc, total) do
     r = get_json(url)
     if r["evolves_from_species"] == nil and !(r["is_legendary"]) and !(r["is_mythical"]) do
-      id = get_id(url, 42)
-      r2 = get_json("https://pokeapi.co/api/v2/pokemon/#{id}")
+      r2 = get_json("https://pokeapi.co/api/v2/pokemon/#{r["id"]}")
       moves = get_moves(r2["moves"])
       abilities = get_abilities(r2["abilities"])
       ProgressBar.render(id, total)
