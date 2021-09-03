@@ -63,20 +63,12 @@ defmodule EgggenApi do
     |> Enum.random()
   end
   def gen_rand_gender(species) do
-    genderless_pokemon = [
-    "arctovish", "arctozolt", "aaltoy", "aeldum", "aronzor", "aarbink", "cryogonal", "dhelmise", "dracovish",
-    "dracozolt", "falinks", "golett", "klink", "lunatone", "magnemite", "minior", "polteageist", "porygon", "rotom",
-    "solrock", "staryu", "unknown", "voltorb"
-    ]
+    genderless_pokemon = [883, 881, 343, 374, 436, 703, 615, 781, 882, 880, 870, 622, 599, 337, 81, 774, 855, 137, 479, 338, 120, 201, 100]
 
-    female_only_pokemon = [
-        "nidoran-f", "illumise", "happiny", "kangaskhan", "smoochum", "miltank", "petilil", "vullaby", "flabébé",
-        "bounsweet", "hatenna", "milcrey"
-    ]
+    female_only_pokemon = [29, 314, 440, 115, 238, 241, 548, 629, 669, 761, 856, 868]
 
-    male_only_pokemon = [
-        "nidoran-m", "tyrogue", "tauros", "throh", "tawk", "rufflet", "impidimp"
-    ]
+    male_only_pokemon = [32, 236, 128, 538, 539, 627, 859]
+
     cond do
       species in genderless_pokemon -> 2
       species in female_only_pokemon -> 1
