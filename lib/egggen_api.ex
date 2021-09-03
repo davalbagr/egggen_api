@@ -98,7 +98,7 @@ defmodule EgggenApi do
     %{
       "Species" => pokemon["pokemon_id"],
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
-      "Gender" => gen_rand_gender(pokemon["pokemon_name"]),
+      "Gender" => gen_rand_gender(pokemon["pokemon_id"]),
       "isShiny" => shiny_chance > :rand.uniform(100),
       "Nature" => :rand.uniform(25),
       "HP" => cond_wrapper(max_ivs),
