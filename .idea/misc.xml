@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
+    </configurations>
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="ruby-2.6.3-p62" project-jdk-type="RUBY_SDK" />
+  <component name="accountSettings">
+    <option name="activeRegion" value="us-east-1" />
+    <option name="recentlyUsedRegions">
+      <list>
+        <option value="us-east-1" />
+      </list>
+    </option>
+  </component>
+</project>
