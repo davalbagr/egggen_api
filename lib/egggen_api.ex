@@ -71,13 +71,7 @@ defmodule EgggenApi do
       true -> Enum.random([0, 1])
     end
   end
-  def enum_at_wrapper(x) do
-    if x == nil do
-      0
-    else
-      x
-    end
-  end
+
   def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     generation = game_to_gen(game)
     pokemon = gen_rand_species(file_data, generation)
@@ -94,10 +88,10 @@ defmodule EgggenApi do
       "SpA" => if max_ivs do 31 else :rand.uniform(31) end,
       "SpD" => if max_ivs do 31 else :rand.uniform(31) end,
       "Spe" => if max_ivs do 31 else :rand.uniform(31) end,
-      "MoveOne" => Enum.at(rand_moves, 0) |> enum_at_wrapper(),
-      "MoveTwo" => Enum.at(rand_moves, 1) |> enum_at_wrapper(),
-      "MoveThree" => Enum.at(rand_moves, 2) |> enum_at_wrapper(),
-      "MoveFour" => Enum.at(rand_moves, 3) |> enum_at_wrapper()
+      "MoveOne" => Enum.at(rand_moves, 0) |> then(fn x -> if x == nil do 0 else x end end),
+      "MoveTwo" => Enum.at(rand_moves, 1) |> then(fn x -> if x == nil do 0 else x end end),
+      "MoveThree" => Enum.at(rand_moves, 2) |> then(fn x -> if x == nil do 0 else x end end),
+      "MoveFour" => Enum.at(rand_moves, 3) |> then(fn x -> if x == nil do 0 else x end end)
     }
   end
   def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
