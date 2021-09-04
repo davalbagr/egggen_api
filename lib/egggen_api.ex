@@ -21,6 +21,7 @@ defmodule EgggenApi do
     gens = %{"generation-i" => 1, "generation-ii" => 2, "generation-iii" => 3, "generation-iv" => 4, "generation-v" => 5, "generation-vi" => 6, "generation-vii" => 7, "generation-viii" => 8}
     gens[gen1] <= gens[gen2]
   end
+
   def gen_rand_ability(pokemon, generation, hidden_ability_chance) do
     if is_gen_lower_equal(generation, "generation-ii") do
       0
@@ -42,20 +43,22 @@ defmodule EgggenApi do
   end
 
   def gen_rand_moves(pokemon, game, egg_move_chance) do
-    normal_moves = pokemon["pokemon_normal_moves"] |> Enum.filter(fn %{"game" => g} -> g == game end)
-    egg_moves = pokemon["pokemon_egg_moves"] |> Enum.filter(fn %{"game" => g} -> g == game end)
+    normal_moves = pokemon["pokemon_normal_moves"] |> Enum.reduce([], fn %{"game" => g, "id" => id}, acc -> if game == g do [id | acc] else acc end end)
+    egg_moves = pokemon["pokemon_egg_moves"] |> Enum.reduce([], fn %{"game" => g, "id" => id}, acc -> if game == g do [id | acc] else acc end end)
     if egg_moves == [] do
       Enum.take_random(normal_moves, 4)
     end
-    a = [:rand.uniform(100), :rand.uniform(100), :rand.uniform(100), :rand.uniform(100)]
-    |> Enum.count(fn x -> x < egg_move_chance end)
+    a = 0..3
+    |> Enum.count(fn _ -> :rand.uniform(100) < egg_move_chance end)
     Enum.take_random(normal_moves, 4-a) ++ Enum.take_random(egg_moves, a)
   end
+
   def gen_rand_species(file_data, generation) do
     file_data
     |> Enum.filter(fn %{"pokemon_gen" => x} -> is_gen_lower_equal(x, generation) end)
     |> Enum.random()
   end
+
   def gen_rand_gender(species) do
     genderless_pokemon = [883, 881, 343, 374, 436, 703, 615, 781, 882, 880, 870, 622, 599, 337, 81, 774, 855, 137, 479, 338, 120, 201, 100]
 
@@ -71,18 +74,18 @@ defmodule EgggenApi do
     end
   end
 
-  def foo(x) do
-     if x == nil do 0 else x["id"] end
-  end
+  def foo(nil), do: 0
+  def foo(x), do: x
 
   def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     generation = game_to_gen(game)
     pokemon = gen_rand_species(file_data, generation)
     rand_moves = gen_rand_moves(pokemon, game, egg_move_chance)
+    id = pokemon["pokemon_id"]
     %{
-      "Species" => pokemon["pokemon_id"],
+      "Species" => id,
       "Ability" => gen_rand_ability(pokemon, generation, hidden_ability_chance),
-      "Gender" => gen_rand_gender(pokemon["pokemon_id"]),
+      "Gender" => gen_rand_gender(id),
       "isShiny" => shiny_chance > :rand.uniform(100),
       "Nature" => :rand.uniform(25),
       "HP" => if max_ivs do 31 else :rand.uniform(31) end,
