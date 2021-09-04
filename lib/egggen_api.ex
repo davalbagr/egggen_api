@@ -50,7 +50,6 @@ defmodule EgggenApi do
     a = [:rand.uniform(100), :rand.uniform(100), :rand.uniform(100), :rand.uniform(100)]
     |> Enum.count(fn x -> x < egg_move_chance end)
     Enum.take_random(normal_moves, 4-a) ++ Enum.take_random(egg_moves, a)
-    |> Enum.map(fn %{"id" => id} -> id end)
   end
   def gen_rand_species(file_data, generation) do
     file_data
@@ -73,7 +72,7 @@ defmodule EgggenApi do
   end
 
   def foo(x) do
-     if x == nil do 0 else x end
+     if x == nil do 0 else x["id"] end
   end
 
   def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
