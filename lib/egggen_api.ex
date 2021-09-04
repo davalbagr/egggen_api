@@ -84,13 +84,6 @@ defmodule EgggenApi do
       a
     end
   end
-  def cond_wrapper(bool) do
-    if bool do
-      31
-    else
-      :rand.uniform(31)
-    end
-  end
   def pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     generation = game_to_gen(game)
     pokemon = gen_rand_species(file_data, generation)
@@ -101,12 +94,12 @@ defmodule EgggenApi do
       "Gender" => gen_rand_gender(pokemon["pokemon_id"]),
       "isShiny" => shiny_chance > :rand.uniform(100),
       "Nature" => :rand.uniform(25),
-      "HP" => cond_wrapper(max_ivs),
-      "Atk" => cond_wrapper(max_ivs),
-      "Def" => cond_wrapper(max_ivs),
-      "SpA" => cond_wrapper(max_ivs),
-      "SpD" => cond_wrapper(max_ivs),
-      "Spe" => cond_wrapper(max_ivs),
+      "HP" => if max_ivs do 31 else :rand.uniform(31) end,
+      "Atk" => if max_ivs do 31 else :rand.uniform(31) end,
+      "Def" => if max_ivs do 31 else :rand.uniform(31) end,
+      "SpA" => if max_ivs do 31 else :rand.uniform(31) end,
+      "SpD" => if max_ivs do 31 else :rand.uniform(31) end,
+      "Spe" => if max_ivs do 31 else :rand.uniform(31) end,
       "MoveOne" => enum_at_wrapper(rand_moves, 0),
       "MoveTwo" => enum_at_wrapper(rand_moves, 1),
       "MoveThree" => enum_at_wrapper(rand_moves, 2),
