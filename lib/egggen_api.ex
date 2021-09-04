@@ -28,24 +28,19 @@ defmodule EgggenApi do
       if :rand.uniform(100) < hidden_ability_chance and !(is_gen_lower_equal(generation, "generation-iv")) and pokemon["pokemon_hidden_abilities"] != [] do
         a = pokemon["pokemon_hidden_abilities"]
         |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
-        if a == [] do
-          b = pokemon["pokemon_normal_abilities"]
-            |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
-            |> Enum.random()
-            b["id"]
-        else
-          b = a
+        if a != [] do
+          a
           |> Enum.random()
-          b["id"]
+          |> Map.get("id")
         end
-      else
-          a = pokemon["pokemon_normal_abilities"]
-          |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
-          |> Enum.random()
-          a["id"]
       end
+      pokemon["pokemon_normal_abilities"]
+      |> Enum.filter(fn %{"gen" => x} -> is_gen_lower_equal(x, generation) end)
+      |> Enum.random()
+      |> Map.get("id")
     end
   end
+
   def gen_rand_moves(pokemon, game, egg_move_chance) do
     normal_moves = pokemon["pokemon_normal_moves"] |> Enum.filter(fn %{"game" => g} -> g == game end)
     egg_moves = pokemon["pokemon_egg_moves"] |> Enum.filter(fn %{"game" => g} -> g == game end)
