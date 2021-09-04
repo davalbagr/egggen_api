@@ -7,7 +7,7 @@ defmodule EgggenApiWeb.EgggenController do
     pokemons = if String.to_integer(numb_to_gen) < 10001 do
                 @file_data |> EgggenApi.gen_pokemons(String.to_integer(numb_to_gen), game, String.to_integer(egg_move_chance), String.to_integer(hidden_ability_chance), String.to_integer(shiny_chance), false)
                else
-                json(conn, %{"error" => "requested too many eggs to be generated"})
+                %{"error" => "requested too many eggs to be generated"}
                end
     json(conn, pokemons)
   end
@@ -16,7 +16,7 @@ defmodule EgggenApiWeb.EgggenController do
     pokemons = if String.to_integer(numb_to_gen) < 10001 do
                 @file_data |> EgggenApi.gen_pokemons(String.to_integer(numb_to_gen), game, String.to_integer(egg_move_chance), String.to_integer(hidden_ability_chance), String.to_integer(shiny_chance), true)
                else
-                json(conn, %{"error" => "requested too many eggs to be generated"})
+                %{"error" => "requested too many eggs to be generated"}
                end
     json(conn, pokemons)
   end
