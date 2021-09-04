@@ -12,7 +12,7 @@ defmodule EgggenApi.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: EgggenApi.PubSub},
       # Start the Endpoint (http/https)
-      EgggenApiWeb.Endpoint
+      EgggenApiWeb.Endpoint,
       # Start a worker by calling: EgggenApi.Worker.start_link(arg)
       # {EgggenApi.Worker, arg}
     ]

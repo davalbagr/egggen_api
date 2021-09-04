@@ -98,8 +98,8 @@ defmodule EgggenApi do
       "MoveFour" => Enum.at(rand_moves, 3) |> foo()
     }
   end
-  def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
-    file_data = File.read!(Application.app_dir(:egggen_api, "priv/pokemons.json")) |> Jason.decode!()
+
+  def gen_pokemons(file_data, numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
     Enum.map(0..numb_to_gen, fn _x -> pokemon_new(file_data, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) end)
   end
 end
