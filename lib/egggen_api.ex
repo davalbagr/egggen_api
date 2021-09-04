@@ -88,10 +88,10 @@ defmodule EgggenApi do
       "SpA" => if max_ivs do 31 else :rand.uniform(31) end,
       "SpD" => if max_ivs do 31 else :rand.uniform(31) end,
       "Spe" => if max_ivs do 31 else :rand.uniform(31) end,
-      "MoveOne" => Enum.at(rand_moves, 0) |> then(fn x -> if x == nil do 0 else x end end),
-      "MoveTwo" => Enum.at(rand_moves, 1) |> then(fn x -> if x == nil do 0 else x end end),
-      "MoveThree" => Enum.at(rand_moves, 2) |> then(fn x -> if x == nil do 0 else x end end),
-      "MoveFour" => Enum.at(rand_moves, 3) |> then(fn x -> if x == nil do 0 else x end end)
+      "MoveOne" => Enum.at(rand_moves, 0) |> Kernel.then(fn x -> if x == nil do 0 else x end end),
+      "MoveTwo" => Enum.at(rand_moves, 1) |> Kernel.then(fn x -> if x == nil do 0 else x end end),
+      "MoveThree" => Enum.at(rand_moves, 2) |> Kernel.then(fn x -> if x == nil do 0 else x end end),
+      "MoveFour" => Enum.at(rand_moves, 3) |> Kernel.then(fn x -> if x == nil do 0 else x end end)
     }
   end
   def gen_pokemons(numb_to_gen, game, egg_move_chance, hidden_ability_chance, shiny_chance, max_ivs) do
