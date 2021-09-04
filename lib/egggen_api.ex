@@ -23,7 +23,7 @@ defmodule EgggenApi do
   end
   def gen_rand_ability(pokemon, generation, hidden_ability_chance) do
     if is_gen_lower_equal(generation, "generation-ii") do
-      ""
+      0
     else
       if :rand.uniform(100) < hidden_ability_chance and !(is_gen_lower_equal(generation, "generation-iv")) and pokemon["pokemon_hidden_abilities"] != [] do
         a = pokemon["pokemon_hidden_abilities"]
